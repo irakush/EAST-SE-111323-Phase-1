@@ -54,16 +54,61 @@ const foods = [
 const restaurantMenu = document.getElementById('restaurant-menu')
 
 foods.forEach(food => {
+    addFoodImageToRestaurantMenu(food)
+})
+
+function displayFoodDetails(food) {
+    const foodDetailImage = document.querySelector('.detail-image')
+    foodDetailImage.src = food.image
+    const foodName = document.querySelector('.name') 
+    foodName.textContent = food.name
+    const foodDescriptionDisplay = document.querySelector('#description-display')
+    foodDescriptionDisplay.textContent = food.description
+}
+
+function addFoodImageToRestaurantMenu(food){
     const foodImage = document.createElement('img')
     foodImage.src = food.image
     restaurantMenu.appendChild(foodImage)
+
+    // Add event listener
+    foodImage.addEventListener('click', () => {
+        displayFoodDetails(food)
+    })
+}
+
+// const foodDetailImage = document.querySelector('.detail-image')
+// foodDetailImage.src = foods[0].image
+
+// const foodName = document.querySelector('.name') 
+// foodName.textContent = foods[0].name
+
+// const foodDescriptionDisplay = document.querySelector('#description-display')
+// foodDescriptionDisplay.textContent = foods[0].description
+
+displayFoodDetails(foods[0])
+
+// Lecture code
+// foodDetailImage.addEventListener('click', () => {
+//     console.log('Clicked!')
+// })
+
+const newFoodForm = document.getElementById('new-food')
+newFoodForm.addEventListener('submit', (event) => {
+    // prevent form from refreshing when click Submit
+    event.preventDefault()
+    
+    const newNameInputElement = document.getElementById('new-name')
+    const newImageInputElement = document.getElementById('new-image')
+    const newDescriptionElement = document.getElementById('new-description')
+
+    const newFood = {
+        name: newNameInputElement.value,
+        image: newImageInputElement.value,
+        description: newDescriptionElement.value
+    }
+
+    addFoodImageToRestaurantMenu(newFood)
+
+    newFoodForm.reset()
 })
-
-const foodDetailImage = document.querySelector('.detail-image')
-foodDetailImage.src = foods[0].image
-
-const foodName = document.querySelector('.name') 
-foodName.textContent = foods[0].name
-
-const foodDescriptionDisplay = document.querySelector('#description-display')
-foodDescriptionDisplay.textContent = foods[0].description
