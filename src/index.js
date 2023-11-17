@@ -17,25 +17,35 @@ fetch('http://localhost:3000/foods')
 
   showFoodDetails(foods[0])
 })
-.catch(() => console.error('Oops something goes wrong ...'))
+.catch((err) => console.error('ERROR ... :', err))
 
 function addFoodImageToRestaurantMenu(food){
   const imgElement = document.createElement('img')
-  imgElement.addEventListener('click', test)
   imgElement.src = food.image
   restaurantMenu.appendChild(imgElement)
+
+  // Add event listener
+  imgElement.addEventListener('click', () => {
+    showFoodDetails(food)
+  })
 }
 
 function showFoodDetails(food){
   const detailImage = document.getElementsByClassName('detail-image')[0]
   const detailName = document.getElementsByClassName('name')[0]
-  const detailDescription = document.getElementsByClassName('description-display')[0]
+  const detailDescription = document.getElementById('description-display')
 
   detailImage.src = food.image
   detailName.textContent = food.name
   detailDescription.textContent = food.description
-}
-
-function test(){
   
 }
+
+// function displayFoodDetails(food) {
+//     const foodDetailImage = document.querySelector('.detail-image')
+//     foodDetailImage.src = food.image
+//     const foodName = document.querySelector('.name') 
+//     foodName.textContent = food.name
+//     const foodDescriptionDisplay = document.querySelector('#description-display')
+//     foodDescriptionDisplay.textContent = food.description
+// }
