@@ -1,51 +1,66 @@
-
-// write your code here
-// Deliverable 1
-// const promiseDataResponse = fetch('http://localhost:3000/foods')
-// const promiseDataFoodToJson = promiseDataResponse.then(respones => respones.json)
-// const promiseDataFoodObject = promiseDataFood.then(food => console.log(food))
-
 const restaurantMenu = document.getElementById('restaurant-menu')
 
 fetch('http://localhost:3000/foods')
-.then(respones => respones.json())
+.then(response => response.json())
 .then(foods => {
-  
-  foods.forEach(food => {
-    addFoodImageToRestaurantMenu(food)
-  })
+    displayFoodDetails(foods[0])
 
-  showFoodDetails(foods[0])
+    foods.forEach(food => {
+        addFoodImageToRestaurantMenu(food)
+    })
 })
-.catch((err) => console.error('ERROR ... :', err))
 
 function addFoodImageToRestaurantMenu(food){
-  const imgElement = document.createElement('img')
-  imgElement.src = food.image
-  restaurantMenu.appendChild(imgElement)
-
-  // Add event listener
-  imgElement.addEventListener('click', () => {
-    showFoodDetails(food)
-  })
+    const imgElement = document.createElement('img')
+    imgElement.src = food.image
+    imgElement.addEventListener('click', () => {
+        displayFoodDetails(food)
+    })
+    restaurantMenu.appendChild(imgElement)
 }
 
-function showFoodDetails(food){
-  const detailImage = document.getElementsByClassName('detail-image')[0]
-  const detailName = document.getElementsByClassName('name')[0]
-  const detailDescription = document.getElementById('description-display')
-
-  detailImage.src = food.image
-  detailName.textContent = food.name
-  detailDescription.textContent = food.description
-  
+function displayFoodDetails(food){
+    const foodDetailImageElement = document.getElementsByClassName('detail-image')[0]
+    foodDetailImageElement.src = food.image
+    const foodNameElement = document.getElementsByClassName('name')[0]
+    foodNameElement.textContent = food.name
+    const foodDescriptionDisplayElement = document.getElementById('description-display')
+    foodDescriptionDisplayElement.textContent = food.description
 }
 
-// function displayFoodDetails(food) {
-//     const foodDetailImage = document.querySelector('.detail-image')
-//     foodDetailImage.src = food.image
-//     const foodName = document.querySelector('.name') 
-//     foodName.textContent = food.name
-//     const foodDescriptionDisplay = document.querySelector('#description-display')
-//     foodDescriptionDisplay.textContent = food.description
-// }
+const newFoodForm = document.getElementById('new-food')
+newFoodForm.addEventListener('submit', (event) => {
+    event.preventDefault()
+
+    const newNameInputElement = document.getElementById('new-name')
+    const newImageInputElement = document.getElementById('new-image')
+    const newDescriptionInputElement = document.getElementById('new-description')
+
+    const newFood = {
+        name: newNameInputElement.value,
+        image: newImageInputElement.value,
+        description: newDescriptionInputElement.value
+    }
+
+    // write your code here
+    fetch('http://localhost:3000/foods', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newFood)
+    }).then(response => {
+        if (response.ok === true) {
+            // alert('SUCCESS: Add new foot into DB!')
+            response.json().then(newFood => {
+                addFoodImageToRestaurantMenu(newFood)
+                console.log(newFood)
+            })
+        } else {
+            alert('ERROR: Unable to add new food!')
+        }
+    })
+
+    newFoodForm.reset()
+})
+
