@@ -52,9 +52,9 @@ newFoodForm.addEventListener('submit', (event) => {
     }).then(response => {
         if (response.ok === true) {
             // alert('SUCCESS: Add new foot into DB!')
-            response.json().then(newFood => {
-                addFoodImageToRestaurantMenu(newFood)
-                console.log(newFood)
+            response.json().then(newFoodDataResponse => {
+                addFoodImageToRestaurantMenu(newFoodDataResponse)
+                console.log(newFoodDataResponse)
             })
         } else {
             alert('ERROR: Unable to add new food!')
