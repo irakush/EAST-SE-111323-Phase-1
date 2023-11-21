@@ -42,25 +42,23 @@ newFoodForm.addEventListener('submit', (event) => {
         description: newDescriptionInputElement.value
     }
 
-    // write your code here
     fetch('http://localhost:3000/foods', {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(newFood)
-    }).then(response => {
-        if (response.ok === true) {
-            // alert('SUCCESS: Add new foot into DB!')
-            response.json().then(newFoodDataResponse => {
-                addFoodImageToRestaurantMenu(newFoodDataResponse)
-                console.log(newFoodDataResponse)
+    })
+    .then(response => {
+        if(response.ok === true){
+            response.json().then(newFoodData => {
+                addFoodImageToRestaurantMenu(newFoodData)
             })
-        } else {
-            alert('ERROR: Unable to add new food!')
+        }
+        else{
+            alert("Error: Unable to add new food!")
         }
     })
 
     newFoodForm.reset()
 })
-
